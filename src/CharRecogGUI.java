@@ -346,7 +346,7 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
         NNBackProp.verbose = false;
         if (checkVerboseTrain.isSelected()) {
             System.out.println("Time to classificate: " + time);
-            System.out.println("Probability : " + sigOut);
+            System.out.println("The Probability : " + sigOut);
         }
     }//GEN-LAST:event_btTestActionPerformed
 

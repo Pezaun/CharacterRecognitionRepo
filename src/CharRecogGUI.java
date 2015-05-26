@@ -5,7 +5,10 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -252,6 +255,37 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
             button = new JButton(".");
             button.setPreferredSize(new Dimension(30, 70));
             panelMatriceButtons.add(button);
+            button.addMouseListener(new MouseListener() {
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    JButton b = (JButton) e.getSource();
+                    if(e.getButton() != MouseEvent.NOBUTTON){
+                        b.setText("#");
+                        b.setBackground(Color.BLACK);                     
+                    }else{
+                        b.setText(".");
+                        b.setBackground(btClearAll.getBackground());
+                    }
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                }
+            });
+            
             button.addActionListener(new ActionListener() {
 
                 @Override
@@ -262,7 +296,7 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
                         b.setBackground(Color.BLACK);
                     } else {
                         b.setText(".");
-                        b.setBackground(Color.LIGHT_GRAY);
+                        b.setBackground(btClearAll.getBackground());
                     }
                 }
             });

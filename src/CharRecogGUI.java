@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -48,8 +47,6 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
         btLoad = new javax.swing.JButton();
         txtNumInstances = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        txtNumFeatures = new javax.swing.JTextField();
         sliderLearningRate = new javax.swing.JSlider();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -63,6 +60,8 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
         btTest = new javax.swing.JButton();
         btClearAll = new javax.swing.JButton();
         checkVerboseTrain = new javax.swing.JCheckBox();
+        checkDrawMode = new javax.swing.JCheckBox();
+        checkBias = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -84,13 +83,7 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
             }
         });
 
-        txtNumInstances.setEditable(false);
-
-        jLabel2.setText("Instances:");
-
-        jLabel3.setText("Features:");
-
-        txtNumFeatures.setEditable(false);
+        jLabel2.setText("Architecture");
 
         sliderLearningRate.setValue(20);
 
@@ -141,6 +134,10 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
 
         checkVerboseTrain.setText("Verbose");
 
+        checkDrawMode.setText("Draw Mode");
+
+        checkBias.setText("Bias");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -166,11 +163,7 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNumInstances, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNumFeatures, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE))
+                                .addComponent(txtNumInstances))
                             .addComponent(txtFilePath))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -185,6 +178,10 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
                         .addComponent(btTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(checkVerboseTrain)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkDrawMode)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkBias)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btClearAll)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -204,9 +201,7 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtNumInstances, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btLoad)
-                    .addComponent(jLabel3)
-                    .addComponent(txtNumFeatures, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btLoad))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(sliderLearningRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -223,13 +218,15 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
                     .addComponent(btTrain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(progressTrain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelSupport, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+                .addComponent(panelSupport, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btTest, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btClearAll, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(checkVerboseTrain)))
+                        .addComponent(checkVerboseTrain)
+                        .addComponent(checkDrawMode)
+                        .addComponent(checkBias)))
                 .addContainerGap())
         );
 
@@ -246,8 +243,7 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
         cols = lff.getCols();
         rows = lff.getRows();
         JButton button;
-        txtNumInstances.setText(instances.size() + "");
-        txtNumFeatures.setText(cols * rows + "");
+        txtNumInstances.setText(cols * rows + ";" + instances.size() + "");
         panelMatriceButtons.removeAll();
         panelMatriceButtons.setLayout(new GridLayout(rows, cols));
 
@@ -271,6 +267,10 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
+                    if(!checkDrawMode.isSelected()){
+                        return;
+                    }
+                    
                     JButton b = (JButton) e.getSource();
                     if(e.getButton() != MouseEvent.NOBUTTON){
                         b.setText("#");
@@ -311,9 +311,15 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
 
     private void btTrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTrainActionPerformed
         // TODO add your handling code here:
+        String[] arch = txtNumInstances.getText().split(";");
+        int[] archValues = new int[arch.length];
+        for (int i = 0; i < arch.length; i++) {
+            archValues[i] = Integer.parseInt(arch[i]);
+        }
+        
         btTest.setEnabled(false);
         btTrain.setEnabled(false);
-        nn = new NNBackProp(cols * rows, (cols * rows) * 2, instances.size());
+        nn = new NNBackProp(checkBias.isSelected(), archValues);
         NNBackProp.setLearningRate(sliderLearningRate.getValue() / 100.0);
         NNBackProp.setLimitError(0.1);
         NNBackProp.setEpoch(sliderEpoch.getValue());
@@ -377,7 +383,7 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
         txt.append("Error: ");
         txt.append(nn.getOutputError());
         JOptionPane.showMessageDialog(this, txt.toString());
-        NNBackProp.verbose = false;
+        nn.setVerbose(false);
         if (checkVerboseTrain.isSelected()) {
             System.out.println("Time to classify: " + time);
             System.out.println("Probability : " + sigOut);
@@ -459,10 +465,11 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
     private javax.swing.JButton btSelectFile;
     private javax.swing.JButton btTest;
     private javax.swing.JButton btTrain;
+    private javax.swing.JCheckBox checkBias;
+    private javax.swing.JCheckBox checkDrawMode;
     private javax.swing.JCheckBox checkVerboseTrain;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel lblEpoch;
@@ -473,7 +480,6 @@ public class CharRecogGUI extends javax.swing.JFrame implements NNObserver {
     private javax.swing.JSlider sliderEpoch;
     private javax.swing.JSlider sliderLearningRate;
     private javax.swing.JTextField txtFilePath;
-    private javax.swing.JTextField txtNumFeatures;
     private javax.swing.JTextField txtNumInstances;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
